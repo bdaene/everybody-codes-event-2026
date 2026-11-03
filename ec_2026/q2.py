@@ -1,5 +1,3 @@
-from collections.abc import Iterable
-from itertools import count
 from pathlib import Path
 
 Test = list[tuple[int, int]]
@@ -17,10 +15,11 @@ def parse_data(path: Path) -> Data:
 
     return tests
 
+
 def get_order(test: Test) -> list[int]:
     candidates = {a for a, b in test} | {b for a, b in test}
     graph = {a: set() for a in candidates}
-    graph_ = {b : set() for b in candidates}
+    graph_ = {b: set() for b in candidates}
     for a, b in test:
         graph[a].add(b)
         graph_[b].add(a)
@@ -50,5 +49,3 @@ def run(data: Data, part: int = 0) -> int:
         checksum += number
 
     return checksum
-
-
