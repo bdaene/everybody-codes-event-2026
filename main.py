@@ -1,18 +1,17 @@
 from pathlib import Path
 from time import perf_counter_ns
 
-from ec_2026.q1 import solve
-
+from ec_2026 import q2 as quest
 
 DATA_PATH = Path(__file__).parent / 'data.txt'
 
 def main(part: int = 1):
     start = perf_counter_ns()
-    data = solve.parse_data(DATA_PATH)
+    data = quest.parse_data(DATA_PATH)
     print(f'Parsing time: {(perf_counter_ns() - start)/10**6:.3f} ms')
 
     start = perf_counter_ns()
-    result = solve.run(data, part=part)
+    result = quest.run(data, part=part)
     print(f"Solving time: {(perf_counter_ns() - start)/10**6:.3f} ms")
     print(f'Result: {result}')
 
