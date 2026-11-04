@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from pathlib import Path
 
 
 @dataclass
@@ -13,10 +12,10 @@ class Result:
 Data = list[Result]
 
 
-def parse_data(path: Path) -> Data:
+def parse(text: str) -> Data:
     results = []
-    for line in path.read_text().splitlines():
-        result = {name: int(value) for name, value in (entry.split('=') for entry in line.strip().split())}
+    for line in text.splitlines():
+        result = {name: int(value) for name, value in (entry.split("=") for entry in line.strip().split())}
         results.append(Result(**result))
 
     return results
@@ -31,7 +30,7 @@ def compute_order_1(results: Data) -> list[int]:
 
 
 def compute_order_2(results: Data) -> list[int]:
-    times, parts, ids = {}, {}, set()
+    times, parts = {}, {}
     for result in results:
         times[result.id] = times.get(result.id, 0) + result.time
         parts[result.id] = parts.get(result.id, 0) + 1
@@ -66,16 +65,7 @@ def compute_order_3(results: Data) -> list[int]:
     return sorted(scores.values(), reverse=True)
 
 
-def run(data: Data, part: int = 0) -> int:
-    if part == 1:
-        order = compute_order_1(data)
-    elif part == 2:
-        order = compute_order_2(data)
-    elif part == 3:
-        order = compute_order_3(data)
-    else:
-        raise ValueError('Invalid part.')
-
+def ranking_checksum(order: list[int]) -> int:
     position, prev, count, checksum = 0, None, 1, 0
     for result in order:
         if result == prev:
@@ -87,3 +77,15 @@ def run(data: Data, part: int = 0) -> int:
         checksum += position * result
 
     return checksum
+
+
+def part1(data: Data) -> int:
+    return ranking_checksum(compute_order_1(data))
+
+
+def part2(data: Data) -> int:
+    return ranking_checksum(compute_order_2(data))
+
+
+def part3(data: Data) -> int:
+    return ranking_checksum(compute_order_3(data))

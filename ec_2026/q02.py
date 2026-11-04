@@ -1,16 +1,14 @@
-from pathlib import Path
-
 Test = list[tuple[int, int]]
 Data = list[Test]
 
 
-def parse_data(path: Path) -> Data:
+def parse(text: str) -> Data:
     tests = []
-    for line in path.read_text().splitlines():
+    for line in text.splitlines():
         test = []
         for check in line.split():
             a, o, b = check
-            test.append((int(a), int(b)) if o == '<' else (int(b), int(a)))
+            test.append((int(a), int(b)) if o == "<" else (int(b), int(a)))
         tests.append(test)
 
     return tests
@@ -38,7 +36,7 @@ def get_order(test: Test) -> list[int]:
     return order
 
 
-def run(data: Data, part: int = 0) -> int:
+def part1(data: Data) -> int:
     checksum = 0
     for test in data:
         order = get_order(test)
@@ -49,3 +47,6 @@ def run(data: Data, part: int = 0) -> int:
         checksum += number
 
     return checksum
+
+
+part3 = part2 = part1

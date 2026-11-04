@@ -1,14 +1,13 @@
 from itertools import cycle
-from pathlib import Path
 
 Vote = tuple[int, int]
 Data = list[Vote]
 
 
-def parse_data(path: Path) -> Data:
+def parse(text: str) -> Data:
     votes = []
-    for line in path.read_text().splitlines():
-        vote = tuple(map(int, line.strip().removeprefix('ISO-').removeprefix('ISO2-').split()))
+    for line in text.splitlines():
+        vote = tuple(map(int, line.strip().removeprefix("ISO-").removeprefix("ISO2-").split()))
         votes.append(vote)
 
     return votes
@@ -42,8 +41,12 @@ def check_vote(vote: Vote) -> int:
     return value
 
 
-def run(data: Data, part: int = 0) -> int:
-    if part == 3:
-        return sum(check_vote(vote) for vote in data)
-
+def part1(data: Data) -> int:
     return sum(get_value(vote) for vote in data)
+
+
+part2 = part1
+
+
+def part3(data: Data) -> int:
+    return sum(check_vote(vote) for vote in data)
