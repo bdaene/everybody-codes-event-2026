@@ -1,3 +1,4 @@
+from collections import defaultdict
 from dataclasses import dataclass
 
 
@@ -15,6 +16,8 @@ Data = list[Result]
 def parse(text: str) -> Data:
     results = []
     for line in text.splitlines():
+        if not line.strip():
+            continue
         result = {name: int(value) for name, value in (entry.split("=") for entry in line.strip().split())}
         results.append(Result(**result))
 
@@ -22,18 +25,18 @@ def parse(text: str) -> Data:
 
 
 def compute_order_1(results: Data) -> list[int]:
-    times = {}
+    times = defaultdict(int)
     for result in results:
-        times[result.id] = times.get(result.id, 0) + result.time
+        times[result.id] += result.time
 
     return sorted(times.values())
 
 
 def compute_order_2(results: Data) -> list[int]:
-    times, parts = {}, {}
+    times, parts = defaultdict(int), defaultdict(int)
     for result in results:
-        times[result.id] = times.get(result.id, 0) + result.time
-        parts[result.id] = parts.get(result.id, 0) + 1
+        times[result.id] += result.time
+        parts[result.id] += 1
 
     order = sorted(times.keys(), key=lambda x: (-parts[x], times[x]))
 
@@ -47,19 +50,19 @@ def compute_order_3(results: Data) -> list[int]:
         part = quest.setdefault(result.part, {})
         part[result.id] = result.time
 
-    scores = {}
+    scores = defaultdict(int)
     for quest in quests.values():
-        times = {}
+        times = defaultdict(int)
         for part in sorted(quest):
-            current_times = {}
-            for id, time in quest[part].items():
-                times[id] = times.get(id, 0) + time
-                current_times.setdefault(times[id], set()).add(id)
+            current_times = defaultdict(list)
+            for player, time in quest[part].items():
+                times[player] += time
+                current_times[times[player]].append(player)
 
             position = 0
             for time in sorted(current_times):
-                for id in current_times[time]:
-                    scores[id] = scores.get(id, 0) + max(part * 50 - position, 0)
+                for player in current_times[time]:
+                    scores[player] += max(part * 50 - position, 0)
                 position += len(current_times[time])
 
     return sorted(scores.values(), reverse=True)

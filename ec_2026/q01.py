@@ -11,7 +11,7 @@ def parse(text: str) -> Data:
 def solve(data: Data, sequence: Iterator[int]) -> int:
     pattern = next(sequence)
     total = 0
-    for number in data:
+    for number in sorted(data):
         while pattern < number:
             pattern = next(sequence)
         total += pattern - number
@@ -24,7 +24,7 @@ def part1(data: Data) -> int:
 
 
 def part2(data: Data) -> int:
-    return solve(data, (4 * i for i in count(2)))
+    return solve(data, (4 * (i - 1) for i in count(3)))
 
 
 def part3(data: Data) -> int:
