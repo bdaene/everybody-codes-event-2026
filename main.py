@@ -1,7 +1,7 @@
 from pathlib import Path
 from time import perf_counter_ns
 
-from ec_2026 import q3 as quest
+from ec_2026 import q4 as quest
 
 DATA_PATH = Path(__file__).parent / 'data.txt'
 
