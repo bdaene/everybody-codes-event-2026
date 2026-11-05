@@ -8,9 +8,9 @@ QUEST = 0
 
 EXAMPLES = [
     # (part, example input, expected answer)
-    # (1, '''\
+    # (1, """\
     # paste example here
-    # ''', 0),
+    # """, 0),
 ]
 
 

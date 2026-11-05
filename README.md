@@ -24,7 +24,7 @@ uv run main.py 4 3 -i some_file.txt
 
 ## Adding a quest
 
-Create `ec_2026/qNN.py` defining:
+Copy `ec_2026/_template.py` to `ec_2026/qNN.py`. It defines:
 
 - `parse(text: str) -> Data`, plus an optional `parse_partN(text)` override when a part's input differs;
 - `part1(data)`, `part2(data)`, `part3(data)`. Parts that share logic alias or call each other (`part2 = part1`, or a
