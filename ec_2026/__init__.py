@@ -26,7 +26,7 @@ def input_path(quest: int, part: int) -> Path:
     return DATA_DIR / f"everybody_codes_e2026_q{quest:02d}_p{part}.txt"
 
 
-def get_solver(module: ModuleType, part: int) -> tuple[Callable[[str], Any], Callable[[Any], Any]]:
+def get_solver(module: ModuleType, part: int) -> tuple[Callable[[str], Any], Callable[..., Any]]:
     solver = getattr(module, f"part{part}", None)
     if solver is None:
         raise NotImplementedError(f"{module.__name__} has no part{part}")
@@ -34,6 +34,6 @@ def get_solver(module: ModuleType, part: int) -> tuple[Callable[[str], Any], Cal
     return parser, solver
 
 
-def solve(quest: int, part: int, text: str) -> Any:
+def solve(quest: int, part: int, text: str, **kwargs: Any) -> Any:
     parser, solver = get_solver(load_quest(quest), part)
-    return solver(parser(text))
+    return solver(parser(text), **kwargs)
