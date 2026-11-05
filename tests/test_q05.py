@@ -1,5 +1,3 @@
-"""Quest 5 examples."""
-
 import pytest
 
 from ec_2026 import solve
