@@ -42,21 +42,30 @@ def part2(data: Data) -> int:
     return best
 
 
-def part3(data: Data) -> int:
+def part3(data: Data, allow_same_color: bool = True) -> int:
     layer = data[0]
     count = Counter(c for line in layer for c in line)
-    total = sum(count.values()) - count["K"]
+    k = count.pop("K", 0)
+    total = sum(count.values())
 
     # Split the CMY colors in 3 similar groups
     div, mod = divmod(total, 3)
-    max_without_k = prod(div + (i < mod) for i in range(3))
+    if allow_same_color or 3 * max(count.values()) <= 2 * total:
+        max_without_k = prod(div + (i < mod) for i in range(3))
+    else:
+        max_color = max(count.values())
+        div, mod = divmod(max_color, 2)
+        max_without_k = (total - max_color) * prod(div + (i < mod) for i in range(2))
 
     # Keep the K colors and split the CMY colors in 2 similar groups
     div, mod = divmod(total, 2)
-    max_with_k = count["K"] * prod(div + (i < mod) for i in range(2))
+    max_with_k = k * prod(div + (i < mod) for i in range(2))
 
     # Both splits are always achievable. Rename so that C >= M >= Y, t = C + M + Y:
     # - 2 groups: B and G (M -> B, Y -> G, C fills either; M, Y <= t/2).
     # - 3 groups: B, G, R if C <= 2t/3 (R filled by M and Y), else C, B, G.
-
     return max(max_with_k, max_without_k)
+
+
+def part4(data: Data) -> int:
+    return part3(data, allow_same_color=False)

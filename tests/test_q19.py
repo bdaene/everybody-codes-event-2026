@@ -72,6 +72,36 @@ YYYCCMMM
 """,
         8000,
     ),
+    (
+        4,
+        """\
+YYYYY
+YCYKY
+YKYMY
+YYYYY
+""",
+        162,
+    ),
+    (
+        4,
+        """\
+CCCCC
+CCCCC
+CCKCC
+CCCCC
+""",
+        90,
+    ),
+    (
+        4,
+        """\
+YYYYY
+YCYCY
+YYYYY
+MYMYM
+""",
+        280,
+    ),
 ]
 
 
